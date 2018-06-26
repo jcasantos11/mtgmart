@@ -21,6 +21,7 @@ Vue.use(Vuetify, { theme: {
 Vue.config.productionTip = false
 Vue.filter('date', DateFilter)
 Vue.component('app-alert', AlertCmp)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -35,5 +36,7 @@ new Vue({
       projectId: 'mtgmart-3ab34',
       storageBucket: 'mtgmart-3ab34.appspot.com'
     })
+
+    this.$store.dispatch('loadItems')
   }
 })

@@ -6,35 +6,15 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    loadedItems: [
-      {
-        imageUrl: 'https://res.cloudinary.com/csicdn/image/upload/c_pad,fl_lossy,h_300,q_auto,w_300/v1/Images/Products/mtg%20art/Dominaria/full/DZ4Lyu4UQAAftWf.jpg',
-        id: '1',
-        title: 'Lyra Dawnbringer',
-        date: '2018-06-18',
-        price: '1000.00',
-        desc: 'Lyra Dawnbringer for sale',
-        user: 'qwerty123',
-        dealt: 'false',
-        dealtto: ''
-      },
-      {
-        imageUrl: 'https://cdn1.mtggoldfish.com/images/gf/Karn%252C%2BScion%2Bof%2BUrza%2B%255BDOM%255D.jpg',
-        id: '2',
-        title: 'Karn, Scion of Urza',
-        date: '2018-06-19',
-        price: '2000.00',
-        desc: 'Karn, Scion of Urza for sale',
-        user: 'qwerty123',
-        dealt: 'false',
-        dealtto: ''
-      }
-    ],
+    loadedItems: [],
     user: null,
     loading: false,
     error: null
   },
   mutations: {
+    setLoadedItems (state, payload) {
+      state.loadedItems = payload
+    },
     postItem (state, payload) {
       state.loadedItems.push(payload)
     },
@@ -52,16 +32,54 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    loadItems ({commit}) {
+      firebase.database().ref('items').once('value')
+      .then((data) => {
+        const items = []
+        const obj = data.val()
+        for (let key in obj) {
+          items.push({
+            id: key,
+            title: obj[key].title,
+            price: obj[key].price,
+            date: obj[key].date,
+            imageUrl: obj[key].imageUrl,
+            desc: obj[key].desc,
+            user: obj[key].user,
+            dealt: obj[key].dealt,
+            dealtto: obj[key].dealtto
+          })
+        }
+        commit('setLoadedItems', items)
+      })
+      .catch(
+        (error) => {
+          console.log(error)
+        }
+      )
+    },
     postItem ({commit}, payload) {
       const item = {
         title: payload.title,
         price: payload.price,
         imageUrl: payload.imageUrl,
         desc: payload.desc,
-        date: payload.date,
-        id: payload.id
+        date: payload.date.toISOString(),
+        user: payload.user,
+        dealt: payload.dealt,
+        dealtto: payload.dealtto
       }
-      commit('postItem', item)
+      firebase.database().ref('items').push(item)
+      .then((data) => {
+        const key = data.key
+        commit('postItem', {
+          ...item,
+          id: key
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
     signUserUp ({commit}, payload) {
       commit('setLoading', true)

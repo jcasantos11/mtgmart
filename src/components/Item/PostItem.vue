@@ -121,7 +121,10 @@
           imageUrl: this.imageUrl,
           desc: this.desc,
           date: new Date(),
-          id: '3'
+          id: '3',
+          user: '',
+          dealt: false,
+          dealtto: ''
         }
         this.$store.dispatch('postItem', itemData)
         this.$router.push('/item/search')
