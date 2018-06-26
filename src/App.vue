@@ -49,20 +49,12 @@
 export default {
   data () {
     return {
-      sideNav: false,
-      menuItems: [
-        {
-          icon: 'add', title: 'Post Item', link: '/item/add'
-        },
-        {
-          icon: 'search', title: 'Search Item', link: '/item/search'
-        },
-        {
-          icon: 'thumb_up', title: 'Deals', link: '/item/deals'
-        },
-        {
-          icon: 'account_circle', title: 'Profile', link: '/profile'
-        },
+      sideNav: false
+    }
+  },
+  computed: {
+    menuItems () {
+      let menuItems = [
         {
           icon: 'create', title: 'Sign Up', link: '/signup'
         },
@@ -70,6 +62,26 @@ export default {
           icon: 'lock_open', title: 'Sign In', link: '/signin'
         }
       ]
+      if (this.userIsAuthenticated) {
+        menuItems = [
+          {
+            icon: 'add', title: 'Post Item', link: '/item/add'
+          },
+          {
+            icon: 'search', title: 'Search Item', link: '/item/search'
+          },
+          {
+            icon: 'thumb_up', title: 'Deals', link: '/item/deals'
+          },
+          {
+            icon: 'account_circle', title: 'Profile', link: '/profile'
+          }
+        ]
+      }
+      return menuItems
+    },
+    userIsAuthenticated () {
+      return this.$store.getters.user !== null && this.$store.getters.user !== undefined
     }
   },
   name: 'App'
