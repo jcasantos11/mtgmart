@@ -27,7 +27,7 @@ export const store = new Vuex.Store({
         desc: 'Karn, Scion of Urza for sale',
         user: 'qwerty123',
         dealt: 'false',
-        dealtto: 'false'
+        dealtto: ''
       }
     ],
     user: null,
@@ -58,15 +58,9 @@ export const store = new Vuex.Store({
         price: payload.price,
         imageUrl: payload.imageUrl,
         desc: payload.desc,
-        date: payload.date
+        date: payload.date,
+        id: payload.id
       }
-      firebase.datebase().ref('items').push()
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
       commit('postItem', item)
     },
     signUserUp ({commit}, payload) {
