@@ -15,7 +15,8 @@ export const store = new Vuex.Store({
         price: '1000.00',
         desc: 'Lyra Dawnbringer for sale',
         user: 'qwerty123',
-        dealt: 'false'
+        dealt: 'false',
+        dealtto: ''
       },
       {
         imageUrl: 'https://cdn1.mtggoldfish.com/images/gf/Karn%252C%2BScion%2Bof%2BUrza%2B%255BDOM%255D.jpg',
@@ -25,7 +26,8 @@ export const store = new Vuex.Store({
         price: '2000.00',
         desc: 'Karn, Scion of Urza for sale',
         user: 'qwerty123',
-        dealt: 'false'
+        dealt: 'false',
+        dealtto: 'false'
       }
     ],
     user: null,
@@ -56,9 +58,15 @@ export const store = new Vuex.Store({
         price: payload.price,
         imageUrl: payload.imageUrl,
         desc: payload.desc,
-        date: payload.date,
-        id: payload.id
+        date: payload.date
       }
+      firebase.datebase().ref('items').push()
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
       commit('postItem', item)
     },
     signUserUp ({commit}, payload) {
