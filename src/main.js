@@ -7,6 +7,8 @@ import 'vuetify/dist/vuetify.min.css'
 import { store } from './store'
 import DateFilter from './filters/date'
 import AlertCmp from './components/Shared/Alert.vue'
+import EditItemDiag from './components/Item/Edit/EditItemDetailsDialog.vue'
+import money from 'v-money'
 
 Vue.use(Vuetify, { theme: {
   primary: '#ee44aa',
@@ -18,9 +20,11 @@ Vue.use(Vuetify, { theme: {
   warning: '#FFC107'
 }})
 
+Vue.use(money, {precision: 5})
 Vue.config.productionTip = false
 Vue.filter('date', DateFilter)
 Vue.component('app-alert', AlertCmp)
+Vue.component('edit-diag', EditItemDiag)
 
 /* eslint-disable no-new */
 new Vue({

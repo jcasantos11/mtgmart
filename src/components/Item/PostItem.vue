@@ -29,7 +29,8 @@
                             label="Price"
                             id="price"
                             required
-                            v-model="price">
+                            v-model="price"
+                            suffix="Php">
                             </v-text-field>
                         </v-flex>
                     </v-layout>
@@ -121,7 +122,6 @@
           imageUrl: this.imageUrl,
           desc: this.desc,
           date: new Date(),
-          id: '3',
           user: '',
           dealt: false,
           dealtto: ''

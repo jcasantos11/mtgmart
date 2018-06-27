@@ -18,6 +18,20 @@ export const store = new Vuex.Store({
     postItem (state, payload) {
       state.loadedItems.push(payload)
     },
+    updateItem (state, payload) {
+      const item = state.loadedItems.find(item => {
+        return item.id === payload.id
+      })
+      if (payload.title) {
+        item.title = payload.title
+      }
+      if (payload.desc) {
+        item.desc = payload.title
+      }
+      if (payload.price) {
+        item.price = payload.price
+      }
+    },
     setUser (state, payload) {
       state.user = payload
     },
@@ -61,14 +75,14 @@ export const store = new Vuex.Store({
         }
       )
     },
-    postItem ({commit}, payload) {
+    postItem ({commit, getters}, payload) {
       const item = {
         title: payload.title,
         price: payload.price,
         imageUrl: payload.imageUrl,
         desc: payload.desc,
         date: payload.date.toISOString(),
-        user: payload.user,
+        user: getters.user.id,
         dealt: payload.dealt,
         dealtto: payload.dealtto
       }
@@ -82,6 +96,28 @@ export const store = new Vuex.Store({
       })
       .catch((error) => {
         console.log(error)
+      })
+    },
+    updateItemData ({commit}, payload) {
+      commit('setLoading', true)
+      const updateObj = {}
+      if (payload.title) {
+        updateObj.title = payload.title
+      }
+      if (payload.desc) {
+        updateObj.des = payload.desc
+      }
+      if (payload.price) {
+        updateObj.price = payload.price
+      }
+      firebase.database().ref('items').child(payload.id).update(updateObj)
+      .then(() => {
+        commit('setLoading', false)
+        commit('updateItem', payload)
+      })
+      .catch(error => {
+        console.log(error)
+        commit('setLoading', false)
       })
     },
     signUserUp ({commit}, payload) {
