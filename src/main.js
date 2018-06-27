@@ -36,7 +36,11 @@ new Vue({
       projectId: 'mtgmart-3ab34',
       storageBucket: 'mtgmart-3ab34.appspot.com'
     })
-
-    this.$store.dispatch('loadItems')
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user)
+        this.$store.dispatch('loadItems')
+      }
+    })
   }
 })

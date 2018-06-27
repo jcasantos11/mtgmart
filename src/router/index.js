@@ -8,6 +8,7 @@ import SignUp from '@/components/User/SignUp'
 import Search from '@/components/Item/Search'
 import Deals from '@/components/Item/Deals'
 import Item from '@/components/Item/item'
+import AuthGuard from './auth-guard'
 
 Vue.use(Router)
 
@@ -21,7 +22,8 @@ export default new Router({
     {
       path: '/item/add',
       name: 'Post Item',
-      component: PostItem
+      component: PostItem,
+      beforeEnter: AuthGuard
     },
     {
       path: '/item/search',
@@ -31,7 +33,8 @@ export default new Router({
     {
       path: '/item/deals',
       name: 'Deals',
-      component: Deals
+      component: Deals,
+      beforeEnter: AuthGuard
     },
     {
       path: '/item/:id',
@@ -42,7 +45,8 @@ export default new Router({
     {
       path: '/profile',
       name: 'Profile',
-      component: Profile
+      component: Profile,
+      beforeEnter: AuthGuard
     },
     {
       path: '/signin',

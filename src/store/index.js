@@ -33,6 +33,7 @@ export const store = new Vuex.Store({
   },
   actions: {
     loadItems ({commit}) {
+      commit('setLoading', true)
       firebase.database().ref('items').once('value')
       .then((data) => {
         const items = []
@@ -51,10 +52,12 @@ export const store = new Vuex.Store({
           })
         }
         commit('setLoadedItems', items)
+        commit('setLoading', false)
       })
       .catch(
         (error) => {
           console.log(error)
+          commit('setLoading', false)
         }
       )
     },
@@ -126,6 +129,13 @@ export const store = new Vuex.Store({
           console.log(error)
         }
       )
+    },
+    autoSignIn ({commit}, payload) {
+      commit('setUser', {id: payload.uid, registeredItems: []})
+    },
+    logout ({commit}) {
+      firebase.auth().signOut()
+      commit('setUser', null)
     },
     clearError ({commit}) {
       commit('clearError')
