@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "firebase": "^5.1.0",
+    "nexmo": "^2.3.2",
     "v-money": "^0.8.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
